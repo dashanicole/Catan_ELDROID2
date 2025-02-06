@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">DIETHER D. CATAN</string>
+    <string name="enter_idno">ENTER IDNO</string>
+    <string name="enter_name">ENTER NAME</string>
+    <string-array name="courses">
+        <item>BSCS</item>
+        <item>BSIT</item>
+        <item>BSIS</item>
+        <item>BSIM</item>
+        <item>ACT</item>
+    </string-array>
+</resources>
