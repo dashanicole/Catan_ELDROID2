@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CATAN, DIETHER D.</string>
+    <string-array name="names">
+        <item>ALPHA</item>
+        <item>BETA</item>
+        <item>CHARLIE</item>
+        <item>DELTA</item>
+        <item>ECHO</item>
+        <item>FOXTROT</item>
+    </string-array>
+</resources>
