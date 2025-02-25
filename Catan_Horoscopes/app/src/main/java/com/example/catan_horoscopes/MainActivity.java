@@ -1,6 +1,8 @@
 package com.example.catan_horoscopes;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +11,7 @@ import android.widget.ListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.catan_horoscopes.ItemAdapter;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
         lv = findViewById(R.id.listView);
@@ -68,12 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new ItemAdapter(this,list);
         lv.setAdapter(adapter);
-
-//        ListView listView = findViewById(R.id.listView);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, zodiacSigns);
-//        listView.setAdapter(adapter);
-
-        // Click listener for list items
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -102,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         horoscopeText.setText(horoscopes[position]);
 
         // Configure dialog
-        //dialog.setTitleText("");  // Remove default title
         dialog.setCustomView(customView);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
@@ -111,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 sweetAlertDialog.dismissWithAnimation();
             }
-        });
+        }).setConfirmButtonBackgroundColor(Color.GREEN); // Change to your desired color
 
         dialog.show();
     }
