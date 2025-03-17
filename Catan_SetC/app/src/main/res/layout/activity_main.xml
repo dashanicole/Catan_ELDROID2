@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#bdfe52"
+    android:background="@drawable/cat"
     tools:context=".MainActivity">
 
     <EditText
@@ -17,9 +17,9 @@
         android:layout_marginEnd="16dp"
         android:autofillHints="@string/search"
         android:background="#fefefe"
-        android:hint="@string/search"
         android:drawableStart="@android:drawable/ic_menu_search"
         android:ems="10"
+        android:hint="@string/search"
         android:inputType="text"
         android:padding="10dp"
         android:textAllCaps="true"
@@ -35,7 +35,7 @@
         android:layout_marginTop="75dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="#ccc999"
+        android:background="#fefefe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
