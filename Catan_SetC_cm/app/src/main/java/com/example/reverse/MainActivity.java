@@ -1,12 +1,16 @@
 package com.example.reverse;
+import com.example.reverse.R;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.widget.Toast;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the adapter with the list
         adapter = new PersonAdapter(this, list);
         listView.setAdapter(adapter);
+
+        // Register the ListView for the context menu
+        registerForContextMenu(listView);
 
         // Add a TextWatcher to the EditText for search functionality
         editSearch.addTextChangedListener(new TextWatcher() {
@@ -81,22 +88,61 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 0 && data != null) {
+        if (resultCode == RESULT_OK) {
             Bundle b = data.getExtras();
             String name = b.getString("myname");
-            String imageUri = b.getString("image");
+            String image = b.getString("image");
 
-            Log.d("MainActivity", "Received Name: " + name);
-            Log.d("MainActivity", "Received Image URI: " + imageUri);
+            if (requestCode == 0) {
+                // Adding a new item
+                list.add(new Person(list.size(), image, name));
+            } else if (requestCode == 1) {
+                // Editing an existing item
+                int position = b.getInt("position", -1);
+                if (position != -1) {
+                    Person person = list.get(position);
+                    person.setName(name);
+                    person.setImage(image);
+                }
+            }
 
-            // Add the new item to the list
-            list.add(new Person(list.size(), imageUri, name));
+            adapter.notifyDataSetChanged(); // Refresh the list
+        }
+    }
 
-            // Log the updated list
-            Log.d("MainActivity", "Updated List: " + list.toString());
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // Inflate the context menu from a menu resource
+        getMenuInflater().inflate(R.menu.context_menu, menu);
+    }
 
-            // Notify the adapter that the data has changed
-            adapter.notifyDataSetChanged();
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        // Get the position of the clicked item
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.menu_delete) { // Use if-else instead of switch
+            // Delete the item from the list
+            list.remove(position);
+            adapter.notifyDataSetChanged(); // Refresh the list
+            Toast.makeText(this, "Item deleted", Toast.LENGTH_SHORT).show(); // Show a toast message
+            return true;
+        } else if (itemId == R.id.menu_edit) {
+            // Edit the item: Pass the item's data to MainActivity2
+            Person selectedPerson = list.get(position);
+            Intent intent = new Intent(this, MainActivity2.class);
+            intent.putExtra("edit_mode", true); // Indicate that we're in edit mode
+            intent.putExtra("position", position); // Pass the position of the item
+            intent.putExtra("name", selectedPerson.getName()); // Pass the name
+            intent.putExtra("image", selectedPerson.getImage()); // Pass the image URI
+            startActivityForResult(intent, 1); // Use a different request code for editing
+            return true;
+        } else {
+            return super.onContextItemSelected(item);
         }
     }
 }

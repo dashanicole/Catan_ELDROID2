@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
@@ -20,7 +19,7 @@ public class MainActivity2 extends AppCompatActivity {
     EditText txtName;
     Button btnAdd, btnCancel;
     ImageView imageView;
-    Uri imageUri;
+    Uri imageUri; // Declare imageUri as Uri
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +28,29 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         // Initialize views
-        txtName = findViewById(R.id.editText); // EditText for name
-        btnAdd = findViewById(R.id.btnSave); // Add button
-        btnCancel = findViewById(R.id.btnCancel); // Cancel button
-        imageView = findViewById(R.id.imageView); // ImageView for selected image
+        txtName = findViewById(R.id.editText);
+        btnAdd = findViewById(R.id.btnSave);
+        btnCancel = findViewById(R.id.btnCancel);
+        imageView = findViewById(R.id.imageView);
 
-        // Request focus on the EditText
-        txtName.requestFocus();
+        // Check if we're in edit mode
+        Intent intent = getIntent();
+        boolean isEditMode = intent.getBooleanExtra("edit_mode", false);
+
+        if (isEditMode) {
+            // Populate the fields with the existing data
+            String name = intent.getStringExtra("name");
+            String imageUriString = intent.getStringExtra("image"); // Store the URI as a string
+
+            txtName.setText(name);
+            if (imageUriString != null && !imageUriString.isEmpty()) {
+                imageUri = Uri.parse(imageUriString); // Parse the string into a Uri object
+                imageView.setImageURI(imageUri);
+            }
+
+            // Change the button text to "Update"
+            btnAdd.setText("Update");
+        }
 
         // Set click listener for ImageView to pick an image
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -56,13 +71,15 @@ public class MainActivity2 extends AppCompatActivity {
                     return;
                 }
 
-                // Log the data being passed back
-                Log.d("MainActivity2", "Setting result with name: " + name + ", image URI: " + (imageUri != null ? imageUri.toString() : "No image"));
-
-                // Pass data back to MainActivity
                 Intent intent = new Intent();
                 intent.putExtra("myname", name);
-                intent.putExtra("image", imageUri != null ? imageUri.toString() : "");
+                intent.putExtra("image", imageUri != null ? imageUri.toString() : ""); // Convert Uri to String
+
+                // If in edit mode, pass the position of the item being edited
+                if (getIntent().getBooleanExtra("edit_mode", false)) {
+                    intent.putExtra("position", getIntent().getIntExtra("position", -1));
+                }
+
                 setResult(RESULT_OK, intent);
                 finish(); // Close the activity
             }
@@ -89,7 +106,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 100) {
             // Handle the selected image
-            imageUri = data.getData();
+            imageUri = data.getData(); // Assign the Uri directly
             imageView.setImageURI(imageUri); // Set the selected image to ImageView
         }
     }

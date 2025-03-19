@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Catan, Diether D.</string>
+    <string name="search">SEARCH...</string>
+    <string name="enter_name">Enter name</string>
+    <string name="menuitem_add">Item</string>
+    <string name="pick_image">Pick Image</string>
+</resources>

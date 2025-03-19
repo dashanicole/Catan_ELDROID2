@@ -37,12 +37,8 @@ public class PersonAdapter extends ArrayAdapter<Person> implements Filterable {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if (listItem == null) {
-            // Inflate the appropriate layout based on the position
-            if (position % 2 == 0) {
-                listItem = LayoutInflater.from(context).inflate(R.layout.item_layout_left, parent, false);
-            } else {
-                listItem = LayoutInflater.from(context).inflate(R.layout.item_layout_right, parent, false);
-            }
+            listItem = LayoutInflater.from(context).inflate(
+                    position % 2 == 0 ? R.layout.item_layout_left : R.layout.item_layout_right, parent, false);
         }
 
         Person currentPerson = filteredList.get(position);
