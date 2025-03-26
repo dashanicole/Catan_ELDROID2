@@ -36,7 +36,7 @@ public class EditUserActivity extends AppCompatActivity {
                         profileView.setImageBitmap(selectedImageBitmap);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Failed to load the image", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -81,7 +81,8 @@ public class EditUserActivity extends AppCompatActivity {
         String newName = nameFld.getText().toString().trim();
 
         if (newName.isEmpty() || selectedImageBitmap == null) {
-            Toast.makeText(this, "Please enter a name and select an image", Toast.LENGTH_SHORT).show();
+            String mssg = (newName.isEmpty()) ? "Please enter a name" : "Please select an image";
+            Toast.makeText(this, mssg, Toast.LENGTH_SHORT).show();
             return;
         }
 

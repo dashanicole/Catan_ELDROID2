@@ -13,7 +13,6 @@ public class User {
     private int id;
     private String name;
     private Bitmap image;
-    // ✅ Generate a stable hash based on name to keep consistency
     public int getStableId() {
         return name.hashCode();
     }

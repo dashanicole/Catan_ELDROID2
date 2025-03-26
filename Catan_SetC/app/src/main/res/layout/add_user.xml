@@ -82,7 +82,7 @@
                     android:id="@+id/nameFld"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:hint="Enter name.."
+                    android:hint="Enter name..."
                     android:inputType="text"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>

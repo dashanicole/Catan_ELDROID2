@@ -99,8 +99,6 @@ public class UserAdapter extends BaseAdapter implements Filterable {
         };
     }
 
-
-
     static class ViewHolder {
         TextView name;
         ImageView image;
