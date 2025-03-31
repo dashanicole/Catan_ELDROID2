@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.addBtn).setOnClickListener(v -> {
             Intent intent = new Intent(this, AddUserActivity.class);
             addUserLauncher.launch(intent);
-            Toast.makeText(this, "Added New User", Toast.LENGTH_SHORT).show();
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -101,7 +100,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Catan, Diether D.");
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        User selectedUser = (User) userAdapter.getItem(info.position);
+
+        // Set the header title to the selected user's name
+        menu.setHeaderTitle(selectedUser.getName());
+
         getMenuInflater().inflate(R.menu.user_context_menu, menu);
     }
 
@@ -122,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("image", stream.toByteArray());
 
                 editUserLauncher.launch(intent);
-                Toast.makeText(this, "Edited User: " + selectedUser.getName(), Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.menu_delete:
@@ -144,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         userList.set(position, new User(user.getId(), name, image));
         userAdapter.getFilter().filter("");
         userAdapter.notifyDataSetChanged();
+
+        Toast.makeText(this, "Edited User: " + name, Toast.LENGTH_SHORT).show();
     }
 
     public void addUser(String name, Bitmap image) {
@@ -154,5 +160,7 @@ public class MainActivity extends AppCompatActivity {
             userAdapter.getFilter().filter("");
             userAdapter.notifyDataSetChanged();
         }
+
+        Toast.makeText(this, "Added New User: " + name, Toast.LENGTH_SHORT).show();
     }
 }
